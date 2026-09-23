@@ -2,8 +2,6 @@
 
 Aplicación de consola en Java para registrar la entrada y salida de empleados y consultar sus horas trabajadas.
 
-Proyecto de la asignatura de Programación.
-
 ## Funcionalidades
 
 - Registro e inicio de sesión de empleados
