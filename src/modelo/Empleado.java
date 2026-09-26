@@ -2,7 +2,6 @@ package modelo;
 
 public class Empleado {
     private String id, nombre;
-    private Boolean trabajando;
 
 
     // Getters y Setters
@@ -22,20 +21,9 @@ public class Empleado {
         this.nombre = nombre;
     }
 
-    public boolean isTrabajando() {
-        return trabajando;
+    public Empleado(String id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
-
-    public void setTrabajando(boolean trabajando) {
-        this.trabajando = trabajando;
-    }
-
-    // Metodos
-    public void registrarEntrada() {
-        this.trabajando = true;
-    }
-
-    public void registrarSalida() {
-        this.trabajando = false;
-    }
+    
 }
