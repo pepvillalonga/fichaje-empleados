@@ -12,6 +12,14 @@ public class GestorEmpleados {
         this.listaEmpleados = new ArrayList<>();
     }
 
+    public boolean registrar(String id, String nombre, String password) {
+        return true;
+    }
+
+    public Empleado login(String id, String password) {
+        return null;
+    }
+
     public void RegistrarEmpleado(Empleado empleado){
         listaEmpleados.add(empleado);
     }
@@ -25,5 +33,5 @@ public class GestorEmpleados {
     public List<Empleado> ListaEmpleados(){
         return listaEmpleados;
     }
-    
+
 }
