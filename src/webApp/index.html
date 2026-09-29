@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fichaje borja moll</title>
+</head>
+<body>
+    <h2>Introducir nuevo fichaje</h2>
+
+    <form action="guardar-fichaje" method="POST">
+        <div class="campo">
+            <label for="idEmpleado">ID Empleado:</label>
+            <input type="text" id="idEmpleado" name="idEmpleado" required placeholder="EMP001">
+        </div>
+
+        <div class="campo">
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+        </div>
+
+        <div class="campo">
+            <label for="horaEntrada">Hora de Entrada:</label>
+            <input type="time" id="horaEntrada" name="horaEntrada" required>
+        </div>
+
+        <div class="campo">
+            <label for="horaSalida">Hora de Salida:</label>
+            <input type="time" id="horaSalida" name="horaSalida" required>
+        </div>
+
+        <button type="submit">Fichar</button>
+    </form>
+</body>
+</html>
