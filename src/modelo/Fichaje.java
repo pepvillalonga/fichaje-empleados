@@ -2,6 +2,7 @@ package modelo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Fichaje {
     private String id, idEmpleado;
@@ -71,6 +72,29 @@ public class Fichaje {
         int diferenciaMinutos = minutosSalida - minutosEntrada;
 
         return diferenciaMinutos / 60.0;
+    }
+
+    // Un fichaje está abierto mientras no tiene hora de salida
+    public boolean estaAbierto() {
+        return horaSalida == null;
+    }
+
+    // Convierte horas decimales (ej. 7.5) al formato "7 h 30 min"
+    public static String formatearHoras(double horas) {
+        long minutosTotales = Math.round(horas * 60);
+        return (minutosTotales / 60) + " h " + (minutosTotales % 60) + " min";
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
+        String texto = fecha.format(formatoFecha) + " | Entrada: " + horaEntrada.format(formatoHora) + " | Salida: ";
+        if (estaAbierto()) {
+            return texto + "en curso";
+        }
+        return texto + horaSalida.format(formatoHora) + " | " + formatearHoras(calculoHoras());
     }
 
 }
