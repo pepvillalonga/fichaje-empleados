@@ -6,8 +6,8 @@ import java.time.LocalTime;
 public class Fichaje {
     private String id, idEmpleado;
     private  LocalDate fecha;
-    private LocalTime hora;
-    private TipoFichaje tipo; 
+    private LocalTime horaEntrada;
+    private LocalTime horaSalida;
 
     public String getId() {
         return id;
@@ -21,12 +21,12 @@ public class Fichaje {
         return fecha;
     }
 
-    public LocalTime getHora() {
-        return hora;
+    public LocalTime getHoraEntrada() {
+        return horaEntrada;
     }
-
-    public TipoFichaje getTipo() {
-        return tipo;
+    
+    public LocalTime getHoraSalida() {
+        return horaSalida;
     }
 
     public void setId(String id) {
@@ -41,19 +41,33 @@ public class Fichaje {
         this.fecha = fecha;
     }
 
-    public void setHora(LocalTime hora) {
-        this.hora = hora;
+    public void setHoraEntrada(LocalTime horaEntrada) {
+        this.horaEntrada = horaEntrada;
+    }
+    
+    public void setHoraSalida(LocalTime horaSalida) {
+        this.horaSalida = horaSalida;
     }
 
-    public void setTipo(TipoFichaje tipo) {
-        this.tipo = tipo;
-    }
-
-    public Fichaje(String id, String idEmpleado, TipoFichaje tipo) {
+    public Fichaje(String id, String idEmpleado, LocalTime horaEntrada, LocalTime horaSalida) {
         this.id = id;
         this.idEmpleado = idEmpleado;
-        this.tipo = tipo;
         this.fecha = LocalDate.now();
-        this.hora = LocalTime.now(); 
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
     }
+
+    // Metodo
+    public double calculoHoras() {
+        if (horaEntrada.isBefore(horaSalida)){
+            return 0;
+        }
+        int minutosEntrada = (horaEntrada.getHour() * 60) + horaEntrada.getMinute();
+        int minutosSalida = (horaSalida.getHour() * 60) + horaSalida.getMinute();
+
+        int diferenciaMinutos = minutosSalida - minutosEntrada;
+
+        return diferenciaMinutos / 60.0;
+    }
+    
 }
