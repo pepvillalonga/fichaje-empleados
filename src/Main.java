@@ -6,12 +6,14 @@ import java.util.List;
 import modelo.Empleado;
 import modelo.Fichaje;
 
+// Programa de consola: menús y lectura de datos
 public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
     private static final GestorEmpleados gestor = new GestorEmpleados();
     private static final GestorFichaje gestorFichajes = new GestorFichaje();
 
+    // Comprueba la BD y arranca el menú principal
     public static void main(String[] args) {
         if (!gestor.hayConexion()) {
             System.out.println("No se puede conectar con la base de datos. Revisa que esté arrancada (ver README).");
@@ -25,8 +27,7 @@ public class Main {
         System.out.println("Hasta luego");
     }
 
-    // Menu Inicio
-
+    // Menú principal: login, registro o salir
     private static void menuInicio() {
         int opcion;
         do {
@@ -46,8 +47,7 @@ public class Main {
         } while (opcion != 0);
     }
 
-    // Menu Registro
-
+    // Pide los datos y registra un empleado nuevo
     private static void registrar() {
         System.out.println("\nRegistro");
         String id = leerTexto("ID de empleado: ");
@@ -61,8 +61,7 @@ public class Main {
         }
     }
 
-    // Menu Inicio sesión
-
+    // Pide ID y contraseña y abre el menú del empleado
     private static void login() {
         System.out.println("\nIniciar sesión");
         String id = leerTexto("ID de empleado: ");
@@ -77,8 +76,7 @@ public class Main {
         }
     }
 
-    // Menu Empleados
-
+    // Menú del empleado con sesión iniciada
     private static void menuEmpleado(Empleado empleado) {
         int opcion;
         do {
@@ -107,6 +105,7 @@ public class Main {
         } while (opcion != 0);
     }
 
+    // Registra la entrada del empleado
     private static void ficharEntrada(Empleado empleado) {
         if (gestorFichajes.ficharEntrada(empleado.getId())) {
             System.out.println("Entrada registrada.");
@@ -115,6 +114,7 @@ public class Main {
         }
     }
 
+    // Registra la salida del empleado
     private static void ficharSalida(Empleado empleado) {
         if (gestorFichajes.ficharSalida(empleado.getId())) {
             System.out.println("Salida registrada.");
@@ -123,6 +123,7 @@ public class Main {
         }
     }
 
+    // Muestra todos los fichajes del empleado
     private static void verFichajes(Empleado empleado) {
         List<Fichaje> fichajes = gestorFichajes.fichajesDe(empleado.getId());
         if (fichajes.isEmpty()) {
@@ -135,6 +136,7 @@ public class Main {
         }
     }
 
+    // Muestra las horas trabajadas en formato "X h Y min"
     private static void verHorasTotales(Empleado empleado) {
         double horas = gestorFichajes.calcularTotalHorasEmpleado(empleado.getId());
         System.out.println("Horas totales trabajadas: " + Fichaje.formatearHoras(horas));
@@ -143,6 +145,7 @@ public class Main {
         }
     }
 
+    // Pide confirmación y borra la cuenta. true si se ha borrado
     private static boolean eliminarCuenta(Empleado empleado) {
         String respuesta = leerTexto("¿Seguro que quieres eliminar tu cuenta? (s/n): ");
         if (!respuesta.equalsIgnoreCase("s")) {
@@ -158,8 +161,7 @@ public class Main {
         return false;
     }
 
-    // Lectura de datos
-
+    // Lee un texto no vacío
     private static String leerTexto(String mensaje) {
         String texto;
         do {
@@ -172,6 +174,7 @@ public class Main {
         return texto;
     }
 
+    // Lee un número entero, repite si no es válido
     private static int leerEntero(String mensaje) {
         while (true) {
             System.out.print(mensaje);

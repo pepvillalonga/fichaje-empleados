@@ -14,16 +14,19 @@ import java.util.List;
 import modelo.Empleado;
 import modelo.Fichaje;
 
+// Consultas a la base de datos MySQL
 public class GestorBD {
 
     private static final String URL = "jdbc:mysql://localhost:3306/fichajes";
     private static final String USUARIO = "fichajes";
     private static final String PASSWORD = "fichajes";
 
+    // Abre una conexión nueva con la BD
     private Connection conectar() throws SQLException {
         return DriverManager.getConnection(URL, USUARIO, PASSWORD);
     }
 
+    // true si se puede conectar
     public boolean probarConexion() {
         try (Connection con = conectar()) {
             return true;
@@ -32,6 +35,7 @@ public class GestorBD {
         }
     }
 
+    // INSERT de un empleado
     public void insertarEmpleado(Empleado empleado) {
         String sql = "INSERT INTO empleados (id, nombre, password) VALUES (?, ?, ?)";
         try (Connection con = conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -44,6 +48,7 @@ public class GestorBD {
         }
     }
 
+    // Busca por ID (sin distinguir mayúsculas). null si no existe
     public Empleado buscarEmpleado(String id) {
         String sql = "SELECT id, nombre, password FROM empleados WHERE id = ?";
         try (Connection con = conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -59,6 +64,7 @@ public class GestorBD {
         }
     }
 
+    // Devuelve todos los empleados
     public List<Empleado> listarEmpleados() {
         List<Empleado> empleados = new ArrayList<>();
         String sql = "SELECT id, nombre, password FROM empleados ORDER BY id";
@@ -74,6 +80,7 @@ public class GestorBD {
         return empleados;
     }
 
+    // Borra los fichajes del empleado y después el empleado
     public boolean eliminarEmpleado(String id) {
         eliminarFichajesDe(id);
         String sql = "DELETE FROM empleados WHERE id = ?";
@@ -85,6 +92,7 @@ public class GestorBD {
         }
     }
 
+    // INSERT de un fichaje. Devuelve el id generado
     public String insertarFichaje(Fichaje fichaje) {
         String sql = "INSERT INTO marcatges (id_empleado, fecha, hora_entrada, hora_salida) VALUES (?, ?, ?, ?)";
         try (Connection con = conectar();
@@ -107,6 +115,7 @@ public class GestorBD {
         }
     }
 
+    // Guarda la hora de salida de un fichaje
     public void actualizarSalida(String idFichaje, LocalTime horaSalida) {
         String sql = "UPDATE marcatges SET hora_salida = ? WHERE id = ?";
         try (Connection con = conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -118,6 +127,7 @@ public class GestorBD {
         }
     }
 
+    // Fichajes de un empleado ordenados por fecha y hora
     public List<Fichaje> fichajesDe(String idEmpleado) {
         String sql = "SELECT * FROM marcatges WHERE id_empleado = ? ORDER BY fecha, hora_entrada";
         List<Fichaje> fichajes = new ArrayList<>();
@@ -134,6 +144,7 @@ public class GestorBD {
         return fichajes;
     }
 
+    // Fichajes de todos los empleados
     public List<Fichaje> todosLosFichajes() {
         String sql = "SELECT * FROM marcatges ORDER BY fecha, hora_entrada";
         List<Fichaje> fichajes = new ArrayList<>();
@@ -149,6 +160,7 @@ public class GestorBD {
         return fichajes;
     }
 
+    // Borra todos los fichajes de un empleado
     public void eliminarFichajesDe(String idEmpleado) {
         String sql = "DELETE FROM marcatges WHERE id_empleado = ?";
         try (Connection con = conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -159,6 +171,7 @@ public class GestorBD {
         }
     }
 
+    // Convierte la fila actual en un Fichaje
     private Fichaje leerFichaje(ResultSet rs) throws SQLException {
         Time salida = rs.getTime("hora_salida");
         return new Fichaje(

@@ -8,6 +8,7 @@ Aplicación de consola en Java para registrar la entrada y salida de empleados y
 - Fichar entrada y salida
 - Consultar los fichajes y las horas totales trabajadas
 - Eliminar la cuenta
+- Los datos se guardan en MySQL y se conservan al cerrar el programa
 
 ## Estructura
 
@@ -16,7 +17,8 @@ src/
 ├── Main.java          → Menús por consola
 ├── modelo/            → Empleado y Fichaje
 ├── gestion/           → Lógica del programa
-└── persistencia/      → Consultas a MySQL (GestorBD)
+├── persistencia/      → Consultas a MySQL (GestorBD)
+└── webApp/            → Formulario HTML de nuevo fichaje
 lib/                   → Driver JDBC de MySQL
 sql/crear_tablas.sql   → Tablas empleados y marcatges
 docker-compose.yml     → Base de datos MySQL

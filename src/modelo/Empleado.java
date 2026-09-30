@@ -1,5 +1,6 @@
 package modelo;
 
+// Datos de un empleado
 public class Empleado {
 
     private String id;
@@ -12,6 +13,7 @@ public class Empleado {
         this.password = password;
     }
 
+    // Sin contraseña: se deja vacía para evitar null
     public Empleado(String id, String nombre) {
         this(id, nombre, "");
     }
