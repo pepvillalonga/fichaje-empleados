@@ -1,31 +1,30 @@
 package gestion;
 
-import java.util.ArrayList;
 import java.util.List;
 import modelo.Empleado;
+import persistencia.GestorBD;
 
 public class GestorEmpleados {
 
-    private final List<Empleado> listaEmpleados;
+    private final GestorBD bd;
 
     public GestorEmpleados() {
-        this.listaEmpleados = new ArrayList<>();
+        this.bd = new GestorBD();
+    }
+
+    public boolean hayConexion() {
+        return bd.probarConexion();
     }
 
     public Empleado buscarPorId(String id) {
-        for (Empleado empleado : listaEmpleados) {
-            if (empleado.getId().equalsIgnoreCase(id)) {
-                return empleado;
-            }
-        }
-        return null;
+        return bd.buscarEmpleado(id);
     }
 
     public boolean registrar(String id, String nombre, String password) {
         if (buscarPorId(id) != null) {
             return false;
         }
-        listaEmpleados.add(new Empleado(id, nombre, password));
+        bd.insertarEmpleado(new Empleado(id, nombre, password));
         return true;
     }
 
@@ -38,26 +37,19 @@ public class GestorEmpleados {
     }
 
     public boolean eliminarEmpleado(String id) {
-        Empleado empleado = buscarPorId(id);
-        if (empleado == null) {
-            return false;
-        }
-        listaEmpleados.remove(empleado);
-        return true;
+        return bd.eliminarEmpleado(id);
     }
 
     public void RegistrarEmpleado(Empleado empleado) {
-        listaEmpleados.add(empleado);
+        bd.insertarEmpleado(empleado);
     }
 
     public void EliminarEmpleado(Empleado empleado) {
-        if (listaEmpleados.contains(empleado)) {
-            listaEmpleados.remove(empleado);
-        }
+        bd.eliminarEmpleado(empleado.getId());
     }
 
     public List<Empleado> ListaEmpleados() {
-        return listaEmpleados;
+        return bd.listarEmpleados();
     }
 
 }

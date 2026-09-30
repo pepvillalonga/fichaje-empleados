@@ -2,31 +2,28 @@ package gestion;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import modelo.Fichaje;
+import persistencia.GestorBD;
 
 public class GestorFichaje {
 
-    private final List<Fichaje> historialFichajes;
-    private int siguienteId;
+    private final GestorBD bd;
 
     public GestorFichaje() {
-        this.historialFichajes = new ArrayList<>();
-        this.siguienteId = 1;
+        this.bd = new GestorBD();
     }
 
     public void agregarMarcaje(Fichaje fichaje) {
-        this.historialFichajes.add(fichaje);
+        String id = bd.insertarFichaje(fichaje);
+        fichaje.setId(id);
     }
 
     public boolean ficharEntrada(String idEmpleado) {
         if (buscarFichajeAbierto(idEmpleado) != null) {
             return false;
         }
-        String id = String.valueOf(siguienteId);
-        siguienteId++;
-        agregarMarcaje(new Fichaje(id, idEmpleado, LocalDate.now(), horaActual(), null));
+        agregarMarcaje(new Fichaje(null, idEmpleado, LocalDate.now(), horaActual(), null));
         return true;
     }
 
@@ -36,12 +33,13 @@ public class GestorFichaje {
             return false;
         }
         abierto.setHoraSalida(horaActual());
+        bd.actualizarSalida(abierto.getId(), abierto.getHoraSalida());
         return true;
     }
 
     public Fichaje buscarFichajeAbierto(String idEmpleado) {
-        for (Fichaje fichaje : historialFichajes) {
-            if (fichaje.getIdEmpleado().equalsIgnoreCase(idEmpleado) && fichaje.estaAbierto()) {
+        for (Fichaje fichaje : fichajesDe(idEmpleado)) {
+            if (fichaje.estaAbierto()) {
                 return fichaje;
             }
         }
@@ -49,29 +47,21 @@ public class GestorFichaje {
     }
 
     public List<Fichaje> fichajesDe(String idEmpleado) {
-        List<Fichaje> resultado = new ArrayList<>();
-        for (Fichaje fichaje : historialFichajes) {
-            if (fichaje.getIdEmpleado().equalsIgnoreCase(idEmpleado)) {
-                resultado.add(fichaje);
-            }
-        }
-        return resultado;
+        return bd.fichajesDe(idEmpleado);
+    }
+
+    public List<Fichaje> todosLosFichajes() {
+        return bd.todosLosFichajes();
     }
 
     public void eliminarFichajesDe(String idEmpleado) {
-        for (int i = historialFichajes.size() - 1; i >= 0; i--) {
-            if (historialFichajes.get(i).getIdEmpleado().equalsIgnoreCase(idEmpleado)) {
-                historialFichajes.remove(i);
-            }
-        }
+        bd.eliminarFichajesDe(idEmpleado);
     }
 
     public double calcularTotalHorasEmpleado(String idTrabajador) {
         double totalHoras = 0.0;
-        for (Fichaje fichaje : historialFichajes) {
-            if (fichaje.getIdEmpleado().equalsIgnoreCase(idTrabajador)) {
-                totalHoras = totalHoras + fichaje.calculoHoras();
-            }
+        for (Fichaje fichaje : fichajesDe(idTrabajador)) {
+            totalHoras = totalHoras + fichaje.calculoHoras();
         }
         return totalHoras;
     }
