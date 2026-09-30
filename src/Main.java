@@ -13,7 +13,15 @@ public class Main {
     private static final GestorFichaje gestorFichajes = new GestorFichaje();
 
     public static void main(String[] args) {
-        menuInicio();
+        if (!gestor.hayConexion()) {
+            System.out.println("No se puede conectar con la base de datos. Revisa que esté arrancada (ver README).");
+            return;
+        }
+        try {
+            menuInicio();
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("Hasta luego");
     }
 
@@ -143,7 +151,6 @@ public class Main {
         }
 
         if (gestor.eliminarEmpleado(empleado.getId())) {
-            gestorFichajes.eliminarFichajesDe(empleado.getId());
             System.out.println("Cuenta eliminada correctamente.");
             return true;
         }
