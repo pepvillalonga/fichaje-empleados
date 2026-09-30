@@ -112,7 +112,18 @@ public class Main {
     }
 
     private static boolean eliminarCuenta(Empleado empleado) {
-        return true;
+        String respuesta = leerTexto("¿Seguro que quieres eliminar tu cuenta? (s/n): ");
+        if (!respuesta.equalsIgnoreCase("s")) {
+            System.out.println("Operación cancelada.");
+            return false;
+        }
+
+        if (gestor.eliminarEmpleado(empleado.getId())) {
+            System.out.println("Cuenta eliminada correctamente.");
+            return true;
+        }
+        System.out.println("No se ha podido eliminar la cuenta.");
+        return false;
     }
 
     // Lectura de datos
