@@ -6,6 +6,7 @@ import java.util.List;
 import modelo.Fichaje;
 import persistencia.GestorBD;
 
+// Lógica de fichajes: fichar y calcular horas
 public class GestorFichaje {
 
     private final GestorBD bd;
@@ -14,11 +15,13 @@ public class GestorFichaje {
         this.bd = new GestorBD();
     }
 
+    // Guarda el fichaje en la BD y le asigna el id generado
     public void agregarMarcaje(Fichaje fichaje) {
         String id = bd.insertarFichaje(fichaje);
         fichaje.setId(id);
     }
 
+    // Abre un fichaje con la hora actual. false si ya hay uno abierto
     public boolean ficharEntrada(String idEmpleado) {
         if (buscarFichajeAbierto(idEmpleado) != null) {
             return false;
@@ -27,6 +30,7 @@ public class GestorFichaje {
         return true;
     }
 
+    // Cierra el fichaje abierto. false si no hay ninguno
     public boolean ficharSalida(String idEmpleado) {
         Fichaje abierto = buscarFichajeAbierto(idEmpleado);
         if (abierto == null) {
@@ -37,6 +41,7 @@ public class GestorFichaje {
         return true;
     }
 
+    // Devuelve el fichaje sin salida o null
     public Fichaje buscarFichajeAbierto(String idEmpleado) {
         for (Fichaje fichaje : fichajesDe(idEmpleado)) {
             if (fichaje.estaAbierto()) {
@@ -46,18 +51,22 @@ public class GestorFichaje {
         return null;
     }
 
+    // Devuelve los fichajes de un empleado
     public List<Fichaje> fichajesDe(String idEmpleado) {
         return bd.fichajesDe(idEmpleado);
     }
 
+    // Devuelve los fichajes de todos los empleados
     public List<Fichaje> todosLosFichajes() {
         return bd.todosLosFichajes();
     }
 
+    // Borra todos los fichajes de un empleado
     public void eliminarFichajesDe(String idEmpleado) {
         bd.eliminarFichajesDe(idEmpleado);
     }
 
+    // Suma las horas de los fichajes cerrados
     public double calcularTotalHorasEmpleado(String idTrabajador) {
         double totalHoras = 0.0;
         for (Fichaje fichaje : fichajesDe(idTrabajador)) {
@@ -66,6 +75,7 @@ public class GestorFichaje {
         return totalHoras;
     }
 
+    // Hora actual sin segundos
     private LocalTime horaActual() {
         return LocalTime.now().withSecond(0).withNano(0);
     }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+// Una jornada: fecha, hora de entrada y hora de salida
 public class Fichaje {
     private String id, idEmpleado;
     private LocalDate fecha;
@@ -58,10 +59,12 @@ public class Fichaje {
         this.horaSalida = horaSalida;
     }
 
+    // Sin fecha: usa la de hoy
     public Fichaje(String id, String idEmpleado, LocalTime horaEntrada, LocalTime horaSalida) {
         this(id, idEmpleado, LocalDate.now(), horaEntrada, horaSalida);
     }
 
+    // Horas trabajadas. 0 si está abierto o la salida es anterior a la entrada
     public double calculoHoras() {
         if (horaSalida == null || horaSalida.isBefore(horaEntrada)) {
             return 0;
@@ -74,17 +77,18 @@ public class Fichaje {
         return diferenciaMinutos / 60.0;
     }
 
-    // Un fichaje está abierto mientras no tiene hora de salida
+    // true si aún no tiene hora de salida
     public boolean estaAbierto() {
         return horaSalida == null;
     }
 
-    // Convierte horas decimales (ej. 7.5) al formato "7 h 30 min"
+    // Convierte horas decimales (7.5) a "7 h 30 min"
     public static String formatearHoras(double horas) {
         long minutosTotales = Math.round(horas * 60);
         return (minutosTotales / 60) + " h " + (minutosTotales % 60) + " min";
     }
 
+    // Ej: "30/09/2026 | Entrada: 09:00 | Salida: 17:00 | 8 h 0 min"
     @Override
     public String toString() {
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
