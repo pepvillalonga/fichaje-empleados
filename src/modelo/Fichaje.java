@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 public class Fichaje {
     private String id, idEmpleado;
-    private  LocalDate fecha;
+    private LocalDate fecha;
     private LocalTime horaEntrada;
     private LocalTime horaSalida;
 
@@ -24,7 +24,7 @@ public class Fichaje {
     public LocalTime getHoraEntrada() {
         return horaEntrada;
     }
-    
+
     public LocalTime getHoraSalida() {
         return horaSalida;
     }
@@ -44,22 +44,25 @@ public class Fichaje {
     public void setHoraEntrada(LocalTime horaEntrada) {
         this.horaEntrada = horaEntrada;
     }
-    
+
     public void setHoraSalida(LocalTime horaSalida) {
         this.horaSalida = horaSalida;
     }
 
-    public Fichaje(String id, String idEmpleado, LocalTime horaEntrada, LocalTime horaSalida) {
+    public Fichaje(String id, String idEmpleado, LocalDate fecha, LocalTime horaEntrada, LocalTime horaSalida) {
         this.id = id;
         this.idEmpleado = idEmpleado;
-        this.fecha = LocalDate.now();
+        this.fecha = fecha;
         this.horaEntrada = horaEntrada;
         this.horaSalida = horaSalida;
     }
 
-    // Metodo
+    public Fichaje(String id, String idEmpleado, LocalTime horaEntrada, LocalTime horaSalida) {
+        this(id, idEmpleado, LocalDate.now(), horaEntrada, horaSalida);
+    }
+
     public double calculoHoras() {
-        if (horaEntrada.isBefore(horaSalida)){
+        if (horaSalida == null || horaSalida.isBefore(horaEntrada)) {
             return 0;
         }
         int minutosEntrada = (horaEntrada.getHour() * 60) + horaEntrada.getMinute();
@@ -69,5 +72,5 @@ public class Fichaje {
 
         return diferenciaMinutos / 60.0;
     }
-    
+
 }
