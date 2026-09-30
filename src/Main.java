@@ -1,12 +1,16 @@
 import java.util.Scanner;
 
 import gestion.GestorEmpleados;
+import gestion.GestorFichaje;
+import java.util.List;
 import modelo.Empleado;
+import modelo.Fichaje;
 
 public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
     private static final GestorEmpleados gestor = new GestorEmpleados();
+    private static final GestorFichaje gestorFichajes = new GestorFichaje();
 
     public static void main(String[] args) {
         menuInicio();
@@ -96,19 +100,39 @@ public class Main {
     }
 
     private static void ficharEntrada(Empleado empleado) {
-
+        if (gestorFichajes.ficharEntrada(empleado.getId())) {
+            System.out.println("Entrada registrada.");
+        } else {
+            System.out.println("Ya tienes un fichaje abierto. Ficha la salida primero.");
+        }
     }
 
     private static void ficharSalida(Empleado empleado) {
-
+        if (gestorFichajes.ficharSalida(empleado.getId())) {
+            System.out.println("Salida registrada.");
+        } else {
+            System.out.println("No tienes ningún fichaje abierto. Ficha la entrada primero.");
+        }
     }
 
     private static void verFichajes(Empleado empleado) {
-
+        List<Fichaje> fichajes = gestorFichajes.fichajesDe(empleado.getId());
+        if (fichajes.isEmpty()) {
+            System.out.println("No tienes fichajes.");
+            return;
+        }
+        System.out.println("\nMis fichajes");
+        for (Fichaje fichaje : fichajes) {
+            System.out.println(fichaje);
+        }
     }
 
     private static void verHorasTotales(Empleado empleado) {
-
+        double horas = gestorFichajes.calcularTotalHorasEmpleado(empleado.getId());
+        System.out.println("Horas totales trabajadas: " + Fichaje.formatearHoras(horas));
+        if (gestorFichajes.buscarFichajeAbierto(empleado.getId()) != null) {
+            System.out.println("(El fichaje en curso no se cuenta hasta que fiches la salida.)");
+        }
     }
 
     private static boolean eliminarCuenta(Empleado empleado) {
@@ -119,6 +143,7 @@ public class Main {
         }
 
         if (gestor.eliminarEmpleado(empleado.getId())) {
+            gestorFichajes.eliminarFichajesDe(empleado.getId());
             System.out.println("Cuenta eliminada correctamente.");
             return true;
         }
