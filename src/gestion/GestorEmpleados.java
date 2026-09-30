@@ -23,13 +23,20 @@ public class GestorEmpleados {
         return bd.buscarEmpleado(id);
     }
 
-    // Registra un empleado. false si el ID ya existe
-    public boolean registrar(String id, String nombre, String password) {
+    // Registra un empleado. Devuelve el error o null si todo va bien
+    public String registrar(String id, String nombre, String password) {
+        if (id.isEmpty() || nombre.isEmpty() || password.isEmpty()) {
+            return "Rellena todos los campos.";
+        }
+        // Límites de las columnas de la tabla empleados
+        if (id.length() > 20 || nombre.length() > 100 || password.length() > 100) {
+            return "El ID admite 20 caracteres y el nombre y la contraseña 100.";
+        }
         if (buscarPorId(id) != null) {
-            return false;
+            return "Ya existe un empleado con ese ID.";
         }
         bd.insertarEmpleado(new Empleado(id, nombre, password));
-        return true;
+        return null;
     }
 
     // Devuelve el empleado si ID y contraseña coinciden, si no null

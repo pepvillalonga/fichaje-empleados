@@ -1,35 +1,151 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fichaje borja moll</title>
-</head>
-<body>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control Horario - Nuevo fichaje</title>
+  </head>
+  <body>
     <h2>Introducir nuevo fichaje</h2>
 
-    <form action="guardar-fichaje" method="POST">
-        <div class="campo">
-            <label for="idEmpleado">ID Empleado:</label>
-            <input type="text" id="idEmpleado" name="idEmpleado" required placeholder="EMP001">
-        </div>
+    {{mensaje}}
 
-        <div class="campo">
-            <label for="fecha">Fecha:</label>
-            <input type="date" id="fecha" name="fecha" required>
-        </div>
+    <form action="/guardar-fichaje" method="POST">
+      <div class="campo">
+        <label for="idEmpleado">ID Empleado:</label>
+        <input
+          type="text"
+          id="idEmpleado"
+          name="idEmpleado"
+          required
+          placeholder="EMP001"
+          value="{{idEmpleado}}"
+          autofocus
+        />
+      </div>
 
-        <div class="campo">
-            <label for="horaEntrada">Hora de Entrada:</label>
-            <input type="time" id="horaEntrada" name="horaEntrada" required>
-        </div>
+      <div class="campo">
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required />
+      </div>
 
-        <div class="campo">
-            <label for="horaSalida">Hora de Salida:</label>
-            <input type="time" id="horaSalida" name="horaSalida" required>
-        </div>
+      <div class="campo">
+        <label for="fecha">Fecha:</label>
+        <input
+          type="date"
+          id="fecha"
+          name="fecha"
+          required
+          value="{{fecha}}"
+          max="{{hoy}}"
+        />
+      </div>
 
-        <button type="submit">Fichar</button>
+      <div class="campo">
+        <label for="horaEntrada">Hora de Entrada:</label>
+        <input
+          type="time"
+          id="horaEntrada"
+          name="horaEntrada"
+          required
+          value="{{horaEntrada}}"
+        />
+      </div>
+
+      <div class="campo">
+        <label for="horaSalida">Hora de Salida:</label>
+        <input
+          type="time"
+          id="horaSalida"
+          name="horaSalida"
+          required
+          value="{{horaSalida}}"
+        />
+      </div>
+
+      <button type="submit">Fichar</button>
     </form>
-</body>
+
+    <h2>Nuevo empleado</h2>
+
+    {{mensajeEmpleado}}
+
+    <form action="/registrar-empleado" method="POST">
+      <div class="campo">
+        <label for="nuevoId">ID Empleado:</label>
+        <input
+          type="text"
+          id="nuevoId"
+          name="nuevoId"
+          required
+          maxlength="20"
+          placeholder="EMP001"
+          value="{{nuevoId}}"
+        />
+      </div>
+
+      <div class="campo">
+        <label for="nuevoNombre">Nombre:</label>
+        <input
+          type="text"
+          id="nuevoNombre"
+          name="nuevoNombre"
+          required
+          maxlength="100"
+          value="{{nuevoNombre}}"
+        />
+      </div>
+
+      <div class="campo">
+        <label for="nuevoPassword">Contraseña:</label>
+        <input
+          type="password"
+          id="nuevoPassword"
+          name="nuevoPassword"
+          required
+          maxlength="100"
+        />
+      </div>
+
+      <div class="campo">
+        <label for="repetirPassword">Repetir contraseña:</label>
+        <input
+          type="password"
+          id="repetirPassword"
+          name="repetirPassword"
+          required
+          maxlength="100"
+        />
+      </div>
+
+      <button type="submit">Crear empleado</button>
+    </form>
+
+    <h2>Fichajes</h2>
+
+    <form action="/" method="GET">
+      <label for="filtro">Ver fichajes de:</label>
+      <input
+        type="text"
+        id="filtro"
+        name="id"
+        placeholder="ID empleado"
+        value="{{filtro}}"
+      />
+      <button type="submit">Filtrar</button>
+      <a href="/">Ver todos</a>
+    </form>
+
+    {{tabla}}
+
+    <script>
+      const entrada = document.getElementById("horaEntrada");
+      const salida = document.getElementById("horaSalida");
+      function actualizarMinimo() {
+        salida.min = entrada.value;
+      }
+      entrada.addEventListener("change", actualizarMinimo);
+      actualizarMinimo();
+    </script>
+  </body>
 </html>

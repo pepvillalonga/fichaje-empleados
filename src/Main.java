@@ -54,10 +54,11 @@ public class Main {
         String nombre = leerTexto("Nombre: ");
         String password = leerTexto("Contraseña: ");
 
-        if (gestor.registrar(id, nombre, password)) {
+        String error = gestor.registrar(id, nombre, password);
+        if (error == null) {
             System.out.println("Empleado registrado correctamente.");
         } else {
-            System.out.println("Ya existe un empleado con ese ID.");
+            System.out.println(error);
         }
     }
 

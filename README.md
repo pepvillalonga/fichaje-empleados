@@ -15,10 +15,11 @@ Aplicación de consola en Java para registrar la entrada y salida de empleados y
 ```
 src/
 ├── Main.java          → Menús por consola
+├── ServidorWeb.java   → Web (formulario + tabla) en http://localhost:8080
 ├── modelo/            → Empleado y Fichaje
 ├── gestion/           → Lógica del programa
 ├── persistencia/      → Consultas a MySQL (GestorBD)
-└── webApp/            → Formulario HTML de nuevo fichaje
+└── webApp/            → Plantilla HTML de la web
 lib/                   → Driver JDBC de MySQL
 sql/crear_tablas.sql   → Tablas empleados y marcatges
 docker-compose.yml     → Base de datos MySQL
@@ -50,6 +51,17 @@ docker-compose.yml     → Base de datos MySQL
    ```
 
    En Linux/Mac el separador es `:` en vez de `;`.
+
+4. Web (opcional): con la BD arrancada, ejecutar
+
+   ```
+   java -cp "out;lib/*" ServidorWeb
+   ```
+
+   y abrir http://localhost:8080. Permite:
+   - Crear un empleado (ID, nombre y contraseña).
+   - Añadir un fichaje con ID, contraseña, fecha y horas.
+   - Ver la tabla de fichajes (se puede filtrar por empleado para ver su total de horas).
 
 Para parar la base de datos: `docker compose down` (los datos se conservan).
 Para borrar todos los datos: `docker compose down -v`.
