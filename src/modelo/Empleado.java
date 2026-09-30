@@ -18,12 +18,9 @@ public class Empleado {
     }
 
     public Empleado(String id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
-        this.fichajes = new ArrayList<>();
+        this(id, nombre, "");
     }
 
-    // Getters y Setters
     public String getId() {
         return id;
     }
@@ -44,7 +41,20 @@ public class Empleado {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public List<Fichaje> getFichajes() {
         return fichajes;
+    }
+
+    public void agregarFichaje(Fichaje fichaje) {
+        fichajes.add(fichaje);
+    }
+
+    @Override
+    public String toString() {
+        return id + " - " + nombre;
     }
 }
